@@ -1,0 +1,72 @@
+
+#include "ObjectPoolSubsystem.h"
+
+void UObjectPoolSubsystem::AddPool(TSubclassOf<AActor> ActorClass, int32 initialSize)
+{
+	if (!GetWorld() || !ActorClass->ImplementsInterface(UObjectPoolable::StaticClass()))
+		return;
+
+	FObjectPool NewPool;
+	FActorSpawnParameters SpawnParameters;
+
+	for (int i = 0; i < initialSize; i++)
+	{
+		// spawn and add it to the pool
+		AActor* newActor = GetWorld()->SpawnActor<AActor>(ActorClass, SpawnParameters);
+		IObjectPoolable::Execute_BP_Deactivate(newActor);
+		NewPool.InactivePoolingObjects.AddUnique(TScriptInterface<IObjectPoolable>(newActor));
+	}
+
+	if (ObjectPoolMap.Contains(ActorClass))
+	{
+		ObjectPoolMap[ActorClass].InactivePoolingObjects.Append(NewPool.InactivePoolingObjects);
+		OnInactivePoolingObjectsChanged.Broadcast(ActorClass, NewPool.InactivePoolingObjects.Num());
+		return;
+	}
+
+	ObjectPoolMap.Add(ActorClass, NewPool);
+	OnInactivePoolingObjectsChanged.Broadcast(ActorClass, NewPool.InactivePoolingObjects.Num());
+}
+
+TScriptInterface<IObjectPoolable> UObjectPoolSubsystem::GetActor(TSubclassOf<AActor> ActorClass)
+{
+	if (!GetWorld() || !ActorClass->ImplementsInterface(UObjectPoolable::StaticClass()))
+		return nullptr;
+
+	if (!ObjectPoolMap.Contains(ActorClass))
+	{
+		AddPool(ActorClass);
+	}
+	FObjectPool* PoolObject = ObjectPoolMap.Find(ActorClass);
+
+	if (PoolObject->InactivePoolingObjects.IsEmpty())
+		AddPool(ActorClass, 10);
+
+	TScriptInterface<IObjectPoolable> result = PoolObject->InactivePoolingObjects[0];
+
+	if (result.GetInterface() == nullptr)
+		IObjectPoolable::Execute_BP_Activate(result.GetObject());
+	else
+		result.GetInterface()->BP_Activate_Implementation();
+
+	PoolObject->InactivePoolingObjects.Remove(result);
+	PoolObject->ActivePoolingObjects.AddUnique(TScriptInterface<IObjectPoolable>(result));
+	OnInactivePoolingObjectsChanged.Broadcast(ActorClass, PoolObject->InactivePoolingObjects.Num());
+	return result;
+}
+
+void UObjectPoolSubsystem::ReturnActorToPool(TSubclassOf<AActor> ActorClass,TScriptInterface<IObjectPoolable> actorToReturn)
+{
+	if (!ObjectPoolMap.Contains(ActorClass) || !GetWorld() || !ActorClass->ImplementsInterface(
+		UObjectPoolable::StaticClass()))
+		return;
+
+	FObjectPool* PoolObject = ObjectPoolMap.Find(ActorClass);
+
+	if (!PoolObject->ActivePoolingObjects.Contains(actorToReturn))
+		return;
+
+	PoolObject->ActivePoolingObjects.Remove(actorToReturn);
+	PoolObject->InactivePoolingObjects.AddUnique(TScriptInterface<IObjectPoolable>(actorToReturn));
+	OnInactivePoolingObjectsChanged.Broadcast(ActorClass, PoolObject->InactivePoolingObjects.Num());
+}
