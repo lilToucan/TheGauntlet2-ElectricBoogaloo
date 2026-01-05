@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InputAction.h"
 #include "GameFramework/Character.h"
 #include "GauntletCharacter.generated.h"
 
@@ -10,20 +11,41 @@ UCLASS()
 class THEGAUNTLET_2_API AGauntletCharacter : public ACharacter
 {
 	GENERATED_BODY()
+// Variables
+public: // variables
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="OvelapSphere")
+	TEnumAsByte<ECollisionChannel> CollisionChannel;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="OvelapSphere")
+	float OverlapSphereRange = 500.f;
 
-public:
-	// Sets default values for this character's properties
+protected: // variables
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input")
+	UInputAction* MoveInputAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input")
+	UInputAction* LookAroundInputAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input")
+	UInputAction* InteractInputAction;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input")
+	UInputAction* PauseInputAction;
+
+
+public:	// functions
 	AGauntletCharacter();
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
 
-protected:
-	// Called when the game starts or when spawned
+	// input functions:
+	void MoveInputFunction(const FInputActionValue& InputActionValue);
+	void AimInputFunction(const FInputActionValue& InputActionValue);
+	void InteractInputFunction(const FInputActionValue& InputActionValue);
+	void PauseInputFunction(const FInputActionValue& InputActionValue);
+
+
+protected: // functions 
+	TArray<AActor*> OverlapSphere() const;
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	
 };

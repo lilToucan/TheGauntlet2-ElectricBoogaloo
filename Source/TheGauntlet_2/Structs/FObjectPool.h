@@ -1,5 +1,5 @@
 #pragma once
-#include "TheGauntlet_2/ObjectPooling/Interfaces/ObjectPoolable.h"
+#include "TheGauntlet_2/ObjectPooling/Interfaces/ProjectilePoolable.h"
 
 #include "FObjectPool.generated.h"
 
@@ -9,7 +9,7 @@ struct FObjectPool
 	GENERATED_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, category = "object to Pool")
-	TArray<TScriptInterface<IObjectPoolable>> ActivePoolingObjects;
+	TArray<TScriptInterface<IProjectilePoolable>> ActivePoolingObjects;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, category = "object to Pool")
-	TArray<TScriptInterface<IObjectPoolable>> InactivePoolingObjects;
+	TArray<TScriptInterface<IProjectilePoolable>> InactivePoolingObjects;
 };
