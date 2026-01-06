@@ -7,7 +7,7 @@ void UObjectPoolSubsystem::AddPool(TSubclassOf<AActor> ActorClass, int32 initial
 		return;
 
 	FObjectPool NewPool = FObjectPool();
-	FActorSpawnParameters SpawnParameters = FActorSpawnParameters();
+	FActorSpawnParameters SpawnParameters;
 
 	for (int i = 0; i < initialSize; i++)
 	{

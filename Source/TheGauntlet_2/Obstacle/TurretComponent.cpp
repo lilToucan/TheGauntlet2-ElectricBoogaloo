@@ -91,7 +91,7 @@ void UTurretComponent::FireFunction()
 
 	FTransform spawnTransform = FTransform();
 	spawnTransform.SetLocation(GetOwner()->GetActorLocation());
-	spawnTransform.SetRotation(GetOwner()->GetActorRotation().Quaternion());
+	spawnTransform.SetRotation(RotationDir.Quaternion());
 	spawnTransform.SetScale3D(FVector(1, 1, 1));
 	IProjectilePoolable::Execute_BP_UpdateTransform(Bullet.GetObject(),spawnTransform,false);
 }

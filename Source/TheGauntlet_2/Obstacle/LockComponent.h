@@ -6,11 +6,11 @@
 #include "KeyComponent.h"
 #include "Obstacle.h"
 #include "Components/ActorComponent.h"
-#include "LockedComponent.generated.h"
+#include "LockComponent.generated.h"
 
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class THEGAUNTLET_2_API ULockedComponent : public UActorComponent, public IObstacle
+class THEGAUNTLET_2_API ULockComponent : public UActorComponent, public IObstacle
 {
 	GENERATED_BODY()
 
@@ -30,11 +30,11 @@ protected: // variables
 
 	
 public:	// functions
-	ULockedComponent();
+	ULockComponent();
 	virtual void Trigger() override;
 	virtual void Reset() override;
 
 protected: // functions
-	void Unlock();
+	virtual void Unlock();
 	virtual void BeginPlay() override;
 };

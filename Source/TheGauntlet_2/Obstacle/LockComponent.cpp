@@ -1,16 +1,12 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "LockedComponent.h"
-
+#include "LockComponent.h"
 #include "KeyComponent.h"
 
-ULockedComponent::ULockedComponent()
+ULockComponent::ULockComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void ULockedComponent::BeginPlay()
+void ULockComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -35,15 +31,15 @@ void ULockedComponent::BeginPlay()
 		if (!IsValid(key))
 			continue;
 
-		key->OnUnlock.AddUObject(this, &ULockedComponent::Unlock);
-		key->OnReset.AddUObject(this, &ULockedComponent::Reset);
+		key->OnUnlock.AddUObject(this, &ULockComponent::Unlock);
+		key->OnReset.AddUObject(this, &ULockComponent::Reset);
 		LockCounter++;
 	}
 }
 
-void ULockedComponent::Trigger(){}
+void ULockComponent::Trigger(){}
 
-void ULockedComponent::Reset()
+void ULockComponent::Reset()
 {
 	LocksUnlocked--;
 	for (TScriptInterface<IObstacle> Component : LockedActorComponents)
@@ -53,13 +49,12 @@ void ULockedComponent::Reset()
 	}
 }
 
-void ULockedComponent::Unlock()
+void ULockComponent::Unlock()
 {
 	LocksUnlocked++;
 	if (LocksUnlocked < LockCounter)
 		return;
 
-	//GEngine->AddOnScreenDebugMessage(2, 1, FColor::Red, "Unlocked");
 	for (TScriptInterface<IObstacle> Component : LockedActorComponents)
 	{
 		Component.GetInterface()->bIsObstacleActive = true;
