@@ -18,7 +18,7 @@ void UKeyComponent::Trigger()
 	if (bIsTimed)
 		GetOwner()->GetWorldTimerManager().SetTimer(DelayedReset, this, &UKeyComponent::Reset, Duration);
 	
-	OnUnlock.Broadcast();
+	OnKeyPickup.Broadcast();
 	bIsObstacleActive = false;
 }
 

@@ -2,14 +2,15 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "Obstacle.generated.h"
+#include "Triggerable.generated.h"
 UINTERFACE()
-class UObstacle : public UInterface
+// only used on ActorComponents or SceneComponents
+class UTriggerable : public UInterface 
 {
 	GENERATED_BODY()
 };
 
-class THEGAUNTLET_2_API IObstacle
+class THEGAUNTLET_2_API ITriggerable
 {
 	GENERATED_BODY()
 public:

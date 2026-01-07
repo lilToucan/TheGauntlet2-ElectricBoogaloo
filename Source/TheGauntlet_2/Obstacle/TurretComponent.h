@@ -1,14 +1,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Obstacle.h"
+#include "Triggerable.h"
 #include "Components/ActorComponent.h"
 #include "TheGauntlet_2/ObjectPooling/Subsystem/ObjectPoolSubsystem.h"
 #include "TurretComponent.generated.h"
 
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class THEGAUNTLET_2_API UTurretComponent : public UActorComponent, public IObstacle
+class THEGAUNTLET_2_API UTurretComponent : public UActorComponent, public ITriggerable
 {
 	GENERATED_BODY()
 // variables 

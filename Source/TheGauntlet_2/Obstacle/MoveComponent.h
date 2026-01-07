@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Obstacle.h"
+#include "Triggerable.h"
 #include "Components/SceneComponent.h"
 #include "TheGauntlet_2/Structs/FTravelDuration.h"
 #include "MoveComponent.generated.h"
 
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class THEGAUNTLET_2_API UMoveComponent : public USceneComponent, public IObstacle
+class THEGAUNTLET_2_API UMoveComponent : public USceneComponent, public ITriggerable
 {
 	GENERATED_BODY()
 

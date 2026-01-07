@@ -10,6 +10,7 @@ UMoveComponent::UMoveComponent()
 void UMoveComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	bIsObstacleActive = false;
 	ActorOwner = GetOwner();
 	beginLocation = ActorOwner->GetActorLocation();
 	startLocation = ActorOwner->GetActorLocation();
@@ -20,10 +21,7 @@ void UMoveComponent::BeginPlay()
 
 void UMoveComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	FString boolString = UKismetStringLibrary::Conv_BoolToString(bIsResetting);
-	GEngine->AddOnScreenDebugMessage(2, .1f, FColor::Green,boolString );
 
 	if (!bIsObstacleActive && !bIsResetting)
 		return;
@@ -59,6 +57,7 @@ void UMoveComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 
 void UMoveComponent::Trigger()
 {
+	bIsObstacleActive = true;
 }
 
 void UMoveComponent::Reset()

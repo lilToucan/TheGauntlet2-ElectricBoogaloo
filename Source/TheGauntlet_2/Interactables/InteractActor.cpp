@@ -8,11 +8,11 @@ AInteractActor::AInteractActor()
 void AInteractActor::BeginPlay()
 {
 	Super::BeginPlay();
-	int x = GetComponentsByInterface(UObstacle::StaticClass()).Num();
+	int x = GetComponentsByInterface(UTriggerable::StaticClass()).Num();
 	
-	for (UActorComponent* interactComponent : GetComponentsByInterface(UObstacle::StaticClass()))
+	for (UActorComponent* interactComponent : GetComponentsByInterface(UTriggerable::StaticClass()))
 	{
-		TScriptInterface<IObstacle> interactComp = TScriptInterface<IObstacle>(interactComponent);
+		TScriptInterface<ITriggerable> interactComp = TScriptInterface<ITriggerable>(interactComponent);
 
 		if (interactComp == nullptr)
 			continue;

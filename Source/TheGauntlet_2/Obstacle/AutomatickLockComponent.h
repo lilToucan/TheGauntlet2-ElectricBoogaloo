@@ -1,15 +1,20 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
 #pragma once
 
 #include "CoreMinimal.h"
-#include "KeyComponent.h"
 #include "Triggerable.h"
 #include "Components/ActorComponent.h"
-#include "LockComponent.generated.h"
+#include "AutomatickLockComponent.generated.h"
+
+
+class UKeyComponent;
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class THEGAUNTLET_2_API ULockComponent : public UActorComponent, public ITriggerable
+class THEGAUNTLET_2_API UAutomatickLockComponent : public UActorComponent, public ITriggerable
 {
 	GENERATED_BODY()
+	
 
 public:	// variables
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
@@ -23,15 +28,15 @@ protected: // variables
 	TArray<UKeyComponent*> KeyComponents;
 
 	int LockCounter = 0;
-	int LocksUnlocked;
+	int LocksLocked;
 
 	
 public:	// functions
-	ULockComponent();
+	UAutomatickLockComponent();
 	virtual void Trigger() override;
 	virtual void Reset() override;
 
 protected: // functions
-	virtual void Unlock();
+	virtual void Lock();
 	virtual void BeginPlay() override;
 };

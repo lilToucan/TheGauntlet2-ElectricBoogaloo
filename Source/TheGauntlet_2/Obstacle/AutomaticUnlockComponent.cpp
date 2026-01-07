@@ -8,7 +8,6 @@ UAutomaticUnlockComponent::UAutomaticUnlockComponent()
 void UAutomaticUnlockComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void UAutomaticUnlockComponent::Trigger(){}
@@ -24,7 +23,7 @@ void UAutomaticUnlockComponent::Unlock()
 	if (LocksUnlocked < LockCounter)
 		return;
 
-	for (TScriptInterface<IObstacle> Component : LockedActorComponents)
+	for (TScriptInterface<ITriggerable> Component : LockedActorComponents)
 	{
 		Component.GetInterface()->bIsObstacleActive = true;
 		Component.GetInterface()->Trigger();
