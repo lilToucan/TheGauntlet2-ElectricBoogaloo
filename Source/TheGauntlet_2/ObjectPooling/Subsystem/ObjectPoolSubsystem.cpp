@@ -20,12 +20,12 @@ void UObjectPoolSubsystem::AddPool(TSubclassOf<AActor> ActorClass, int32 initial
 	if (ObjectPoolMap.Contains(ActorClass))
 	{
 		ObjectPoolMap[ActorClass].InactivePoolingObjects.Append(NewPool.InactivePoolingObjects);
-		OnInactivePoolingObjectsChanged.Broadcast(ActorClass, NewPool.InactivePoolingObjects.Num());
+		OnObjectPoolChange.Broadcast(ActorClass, NewPool);
 		return;
 	}
 
 	ObjectPoolMap.Add(ActorClass, NewPool);
-	OnInactivePoolingObjectsChanged.Broadcast(ActorClass, NewPool.InactivePoolingObjects.Num());
+	OnObjectPoolChange.Broadcast(ActorClass, NewPool);
 }
 
 TScriptInterface<IProjectilePoolable> UObjectPoolSubsystem::GetActor(TSubclassOf<AActor> ActorClass)
@@ -51,7 +51,7 @@ TScriptInterface<IProjectilePoolable> UObjectPoolSubsystem::GetActor(TSubclassOf
 
 	PoolObject->InactivePoolingObjects.Remove(result);
 	PoolObject->ActivePoolingObjects.AddUnique(TScriptInterface<IProjectilePoolable>(result));
-	OnInactivePoolingObjectsChanged.Broadcast(ActorClass, PoolObject->InactivePoolingObjects.Num());
+	OnObjectPoolChange.Broadcast(ActorClass, *PoolObject);
 	return result;
 }
 
@@ -68,5 +68,5 @@ void UObjectPoolSubsystem::ReturnActorToPool(TSubclassOf<AActor> ActorClass,TScr
 
 	PoolObject->ActivePoolingObjects.Remove(actorToReturn);
 	PoolObject->InactivePoolingObjects.AddUnique(TScriptInterface<IProjectilePoolable>(actorToReturn));
-	OnInactivePoolingObjectsChanged.Broadcast(ActorClass, PoolObject->InactivePoolingObjects.Num());
+	OnObjectPoolChange.Broadcast(ActorClass, *PoolObject);
 }

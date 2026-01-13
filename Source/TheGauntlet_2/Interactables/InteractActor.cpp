@@ -2,7 +2,7 @@
 
 AInteractActor::AInteractActor()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 }
 
 void AInteractActor::BeginPlay()

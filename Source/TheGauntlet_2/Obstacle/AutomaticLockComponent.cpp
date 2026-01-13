@@ -1,13 +1,13 @@
-#include "AutomatickLockComponent.h"
+#include "AutomaticLockComponent.h"
 
 #include "KeyComponent.h"
 
-UAutomatickLockComponent::UAutomatickLockComponent()
+UAutomaticLockComponent::UAutomaticLockComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UAutomatickLockComponent::BeginPlay()
+void UAutomaticLockComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	LockedActorComponents.Empty();
@@ -16,25 +16,37 @@ void UAutomatickLockComponent::BeginPlay()
 		if (InteractComponent == this) // TODO: CHECK IF THIS EVER BECOMES TRUE :) 
 			continue;
 		
-		TScriptInterface<ITriggerable> ob = TScriptInterface<ITriggerable>(InteractComponent);
-		LockedActorComponents.Add(ob);
+		TScriptInterface<ITriggerable> Triggerable = TScriptInterface<ITriggerable>(InteractComponent);
+		LockedActorComponents.Add(Triggerable);
 	}
 	
 	for (AActor* keyActor : KeyActors) // binds every given key to the unlock function
 	{
+		if (!keyActor)
+			continue;
+		
 		UKeyComponent* key = Cast<UKeyComponent>(keyActor->GetComponentByClass(UKeyComponent::StaticClass()));
 
 		if (!IsValid(key))
 			continue;
-
-		key->OnKeyPickup.AddUObject(this, &UAutomatickLockComponent::Lock);
-		key->OnReset.AddUObject(this, &UAutomatickLockComponent::Reset);
+		
+		if (LockedActorComponents.Contains(key)) // if the key is on the object I'm on 
+		{
+			LockedActorComponents.Remove(key); // remove the key from being locked
+			key->bIsObstacleActive = true; // turn it back on
+		}
+		
+		key->OnKeyPickup.AddUObject(this, &UAutomaticLockComponent::Lock);
+		key->OnReset.AddUObject(this, &UAutomaticLockComponent::Reset);
 		LockCounter++;
 	}
 }
-void UAutomatickLockComponent::Trigger(){}
 
-void UAutomatickLockComponent::Reset() // basically unlock
+void UAutomaticLockComponent::Trigger()
+{
+}
+
+void UAutomaticLockComponent::Reset() // basically unlock
 {
 	LocksLocked--;
 
@@ -45,7 +57,7 @@ void UAutomatickLockComponent::Reset() // basically unlock
 	}
 }
 
-void UAutomatickLockComponent::Lock()
+void UAutomaticLockComponent::Lock()
 {
 	LocksLocked++;
 	if (LocksLocked < LockCounter)
@@ -57,5 +69,3 @@ void UAutomatickLockComponent::Lock()
 		Component.GetInterface()->Reset();
 	}
 }
-
-

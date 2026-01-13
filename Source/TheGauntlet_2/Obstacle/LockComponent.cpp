@@ -23,10 +23,22 @@ void ULockComponent::BeginPlay()
 
 	for (AActor* keyActor : KeyActors) // binds every given key to the unlock function
 	{
-		UKeyComponent* key = Cast<UKeyComponent>(keyActor->GetComponentByClass(UKeyComponent::StaticClass()));
+
+		if (!keyActor)
+			continue;
+		
+		UKeyComponent* key = nullptr;
+		
+		key = Cast<UKeyComponent>(keyActor->GetComponentByClass(UKeyComponent::StaticClass()));
 
 		if (!IsValid(key))
 			continue;
+
+		if (LockedActorComponents.Contains(key)) // if the key is on the object i'm on 
+		{
+			LockedActorComponents.Remove(key); // remove the key from being locked
+			key->bIsObstacleActive = true;
+		}
 
 		key->OnKeyPickup.AddUObject(this, &ULockComponent::Unlock);
 		key->OnReset.AddUObject(this, &ULockComponent::Reset);

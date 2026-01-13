@@ -13,6 +13,9 @@ void UFlickLightComponent::BeginPlay()
 
 void UFlickLightComponent::ChangeMaterial()
 {
+	if (!Mesh)
+		return;
+	
 	if (bIsObstacleActive)
 		Mesh->SetMaterial(0,UnlockedMaterial);
 	else

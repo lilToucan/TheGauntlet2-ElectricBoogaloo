@@ -6,7 +6,7 @@
 #include "TheGauntlet_2/ObjectPooling/Interfaces/ProjectilePoolable.h"
 #include "ObjectPoolSubsystem.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FInactiveObjectsChange, TSubclassOf<AActor>, ActorClass,float ,NumInactiveObjects);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FObjectPoolChange, TSubclassOf<AActor>, ActorClass,FObjectPool ,Pool);
 
 UCLASS()
 class THEGAUNTLET_2_API UObjectPoolSubsystem : public UWorldSubsystem
@@ -14,7 +14,7 @@ class THEGAUNTLET_2_API UObjectPoolSubsystem : public UWorldSubsystem
 	GENERATED_BODY()
 public:
 	UPROPERTY(BlueprintType,BlueprintAssignable,BlueprintReadWrite, Category="Object Pool Subsystem")
-	FInactiveObjectsChange OnInactivePoolingObjectsChanged;
+	FObjectPoolChange OnObjectPoolChange;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, category = "Object Pool Subsystem")
 	TMap<TSubclassOf<AActor>,FObjectPool> ObjectPoolMap;
