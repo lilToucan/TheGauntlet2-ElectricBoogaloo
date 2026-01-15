@@ -23,5 +23,5 @@ public:
 	// Called every frame
 	AInteractActor();
 	virtual void Tick(float DeltaTime) override;
-	virtual void Interact() override;
+	virtual void Interact(AGauntletCharacter* player) override;
 };

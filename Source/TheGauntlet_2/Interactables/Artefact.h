@@ -2,10 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "InteractActor.h"
-#include "OneTimeUseInteractable.generated.h"
+#include "Artefact.generated.h"
 
 UCLASS()
-class THEGAUNTLET_2_API AOneTimeUseInteractable : public AInteractActor
+class THEGAUNTLET_2_API AArtefact : public AInteractActor
 {
 	GENERATED_BODY()
 // variables
@@ -16,9 +16,8 @@ protected:
 
 // functions
 public:
-	virtual void Tick(float DeltaTime) override;
-	AOneTimeUseInteractable();
-	virtual void Interact() override;
+	AArtefact();
+	virtual void Interact(AGauntletCharacter* player) override;
 protected:
 	virtual void BeginPlay() override;
 };

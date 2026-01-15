@@ -1,22 +1,17 @@
-#include "OneTimeUseInteractable.h"
+#include "Artefact.h"
 
-AOneTimeUseInteractable::AOneTimeUseInteractable()
+AArtefact::AArtefact()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	IsInteractionActive = true;
 }
 
-void AOneTimeUseInteractable::BeginPlay()
+void AArtefact::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-void AOneTimeUseInteractable::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
-void AOneTimeUseInteractable::Interact()
+void AArtefact::Interact(AGauntletCharacter* player)
 {
 	if (!IsInteractionActive)
 		return;
@@ -27,6 +22,8 @@ void AOneTimeUseInteractable::Interact()
 		interactableComp->bIsObstacleActive = false;
 	}
 	IsInteractionActive = false;
+	player->Artefact = this;
+	SetActorEnableCollision(false);
 }
 
 

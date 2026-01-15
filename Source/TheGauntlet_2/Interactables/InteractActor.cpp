@@ -25,7 +25,7 @@ void AInteractActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AInteractActor::Interact()
+void AInteractActor::Interact(AGauntletCharacter* player)
 {
 	for (auto interactableComp : interactableComponents)
 	{

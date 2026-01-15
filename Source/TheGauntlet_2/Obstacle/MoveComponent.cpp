@@ -15,6 +15,11 @@ void UMoveComponent::BeginPlay()
 	beginLocation = ActorOwner->GetActorLocation();
 	startLocation = ActorOwner->GetActorLocation();
 	currentWaypoint = 1;
+
+	if (Waypoints.Num() < 1) // basically if there are no waypoints set up stand still 
+		currentWaypoint = 0;
+	
+
 	endLocation = Waypoints[currentWaypoint].WayPoint + beginLocation;
 	duration = Waypoints[currentWaypoint].duration;
 }
@@ -41,7 +46,7 @@ void UMoveComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 			{
 				bIsObstacleActive = false;
 				return;
-			} 
+			}
 			currentWaypoint = 0;
 		}
 
@@ -51,13 +56,12 @@ void UMoveComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 		duration = Waypoints[currentWaypoint].duration;
 	}
 	FVector newLocation = FMath::Lerp(startLocation, endLocation, timer / duration);
-	
+
 	ActorOwner->SetActorLocation(newLocation);
 }
 
 void UMoveComponent::Trigger()
 {
-	bIsObstacleActive = true;
 }
 
 void UMoveComponent::Reset()
@@ -69,4 +73,3 @@ void UMoveComponent::Reset()
 	duration = Waypoints[currentWaypoint].duration;
 	bIsResetting = true;
 }
-

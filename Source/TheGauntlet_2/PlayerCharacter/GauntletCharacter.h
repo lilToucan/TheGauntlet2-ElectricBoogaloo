@@ -11,14 +11,17 @@ UCLASS()
 class THEGAUNTLET_2_API AGauntletCharacter : public ACharacter
 {
 	GENERATED_BODY()
-// Variables
-public: // variables
+// variables
+public: 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="OvelapSphere")
 	TEnumAsByte<ECollisionChannel> CollisionChannel;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="OvelapSphere")
 	float OverlapSphereRange = 500.f;
 
-protected: // variables
+	UPROPERTY(BlueprintReadWrite)
+	AActor* Artefact;
+
+protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input")
 	UInputAction* MoveInputAction;
 
@@ -30,8 +33,8 @@ protected: // variables
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Input")
 	UInputAction* PauseInputAction;
 
-
-public:	// functions
+// functions
+public:
 	AGauntletCharacter();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
@@ -43,7 +46,7 @@ public:	// functions
 	void PauseInputFunction(const FInputActionValue& InputActionValue);
 
 
-protected: // functions 
+protected:
 	TArray<AActor*> OverlapSphere() const;
 	virtual void BeginPlay() override;
 

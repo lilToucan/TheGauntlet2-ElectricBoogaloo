@@ -16,7 +16,8 @@ void AGauntletCharacter::BeginPlay()
 
 void AGauntletCharacter::PauseInputFunction(const FInputActionValue& InputActionValue)
 {
-	Cast<UGauntletGameInstance>(GetGameInstance())->PauseGame();
+	if (UGauntletGameInstance* GameInstance = Cast<UGauntletGameInstance>(GetGameInstance()))
+		GameInstance->PauseGame();
 }
 
 void AGauntletCharacter::MoveInputFunction(const FInputActionValue& InputActionValue)
@@ -64,7 +65,7 @@ void AGauntletCharacter::InteractInputFunction(const FInputActionValue& InputAct
 			continue;
 		}
 
-		ActorInteractable.GetInterface()->Interact();
+		ActorInteractable.GetInterface()->Interact(this);
 	}
 }
 

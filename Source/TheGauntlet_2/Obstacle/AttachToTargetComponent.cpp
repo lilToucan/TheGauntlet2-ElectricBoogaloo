@@ -1,6 +1,7 @@
 #include "AttachToTargetComponent.h"
 
 #include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
 
 UAttachToTargetComponent::UAttachToTargetComponent()
 {
@@ -14,11 +15,18 @@ void UAttachToTargetComponent::BeginPlay()
 
 void UAttachToTargetComponent::Trigger()
 {
-	if (Target == nullptr || !bIsObstacleActive)
+	if (!bIsObstacleActive)
 		return;
 
-	FAttachmentTransformRules rules = FAttachmentTransformRules::SnapToTargetNotIncludingScale;
-	GetOwner()->AttachToActor(Target, rules, SocketName);
+	FAttachmentTransformRules rules = FAttachmentTransformRules::SnapToTargetIncludingScale;
+	AActor* Target = UGameplayStatics::GetPlayerCharacter(GetWorld(),0);
+	if (!Target)
+		return;
+	USkeletalMeshComponent* MeshComp = Target->FindComponentByClass<USkeletalMeshComponent>();
+	if (!MeshComp)
+		return;
+	
+	GetOwner()->AttachToComponent(MeshComp, rules, SocketName);
 	bIsObstacleActive = false;
 }
 

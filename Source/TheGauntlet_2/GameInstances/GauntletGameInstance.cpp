@@ -14,12 +14,16 @@ void UGauntletGameInstance::Quit()
 
 void UGauntletGameInstance::ResumeGame()
 {
+	bIsPaused = false;
 	UGameplayStatics::SetGamePaused(GetWorld(), false);
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(),1);
+	OnGameTimeDialationChange.Broadcast();
 }
 
 void UGauntletGameInstance::PauseGame()
 {
+	bIsPaused = true;
 	UGameplayStatics::SetGamePaused(GetWorld(), true);
 	UGameplayStatics::SetGlobalTimeDilation(GetWorld(),0);
+	OnGameTimeDialationChange.Broadcast();
 }

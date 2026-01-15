@@ -12,9 +12,7 @@ class THEGAUNTLET_2_API UAttachToTargetComponent : public UActorComponent, publi
 	GENERATED_BODY()
 // variables
 public:
-UPROPERTY(EditAnywhere,blueprintreadwrite)
-	ACharacter* Target = nullptr;
-UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	FName SocketName;
 protected:
 
